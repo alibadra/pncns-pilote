@@ -167,13 +167,11 @@ html, body { height: 100%; font-family: var(--font); background: var(--gray-50);
 .user-info { flex: 1; min-width: 0; }
 .btn-logout {
   background: none; border: none; cursor: pointer;
-  color: var(--gray-400); padding: 4px 8px;
-  border-radius: 4px; display: flex; align-items: center; gap: 6px;
+  color: #E53935; padding: 4px;
+  border-radius: 4px; display: flex; align-items: center;
   transition: color .15s, background .15s;
-  font-size: 12px; font-family: var(--font);
 }
-.btn-logout:hover { color: var(--red); background: var(--red-light); }
-.btn-logout-label { font-size: 12px; font-weight: 500; }
+.btn-logout:hover { color: #B71C1C; background: var(--red-light); }
 
 /* ── BADGE MAQUETTE ── */
 #maquette-badge {
