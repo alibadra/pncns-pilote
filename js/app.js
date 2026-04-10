@@ -14,6 +14,7 @@ const PAGE_CONFIG = {
 function navigate(page) {
   if (!PAGE_CONFIG[page]) return;
   currentPage = page;
+  chartsInitialized = {};
 
   // Update nav
   document.querySelectorAll('.nav-item').forEach(el => {
@@ -35,6 +36,5 @@ function navigate(page) {
 }
 
 function renderPage(page) {
-  chartsInitialized = {};
   navigate(page);
 }
