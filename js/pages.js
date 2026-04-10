@@ -632,10 +632,10 @@ function renderSha2011() {
           <div><div class="panel-title">Exporter le rapport SHA2011</div><div class="panel-sub">Formats standardisés OMS/WHO</div></div>
         </div>
         <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <button class="btn-primary" onclick="alert('Export Excel SHA2011 en cours de développement dans la version finale.')">⬇ Excel SHA2011</button>
-          <button class="btn-secondary" onclick="alert('Export PDF en cours de développement dans la version finale.')">⬇ PDF rapport complet</button>
-          <button class="btn-secondary" onclick="alert('Export JSON pour DHIS2 en cours de développement dans la version finale.')">⬇ JSON DHIS2</button>
-          <button class="btn-secondary" onclick="alert('Export CSV en cours de développement dans la version finale.')">⬇ CSV brut</button>
+          <button class="btn-primary" onclick="exportSha2011CSV()">⬇ Excel SHA2011</button>
+          <button class="btn-secondary" onclick="exportSha2011PDF()">⬇ PDF rapport complet</button>
+          <button class="btn-secondary" onclick="exportSha2011JSON()">⬇ JSON DHIS2</button>
+          <button class="btn-secondary" onclick="exportSha2011CSV()">⬇ CSV brut</button>
         </div>
       </div>
     </div>
