@@ -167,11 +167,29 @@ html, body { height: 100%; font-family: var(--font); background: var(--gray-50);
 .user-info { flex: 1; min-width: 0; }
 .btn-logout {
   background: none; border: none; cursor: pointer;
-  color: var(--gray-400); padding: 4px;
-  border-radius: 4px; display: flex; align-items: center;
+  color: var(--gray-400); padding: 4px 8px;
+  border-radius: 4px; display: flex; align-items: center; gap: 6px;
   transition: color .15s, background .15s;
+  font-size: 12px; font-family: var(--font);
 }
 .btn-logout:hover { color: var(--red); background: var(--red-light); }
+.btn-logout-label { font-size: 12px; font-weight: 500; }
+
+/* ── BADGE MAQUETTE ── */
+#maquette-badge {
+  position: fixed;
+  bottom: 12px; right: 14px;
+  z-index: 9999;
+  background: rgba(0,0,0,.45);
+  color: rgba(255,255,255,.75);
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  pointer-events: none;
+  font-family: var(--font);
+}
 
 /* ── TOPBAR ── */
 .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
