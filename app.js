@@ -12,9 +12,10 @@ const PAGE_CONFIG = {
 };
 
 function destroyAllCharts() {
-  // Destroy every Chart.js instance
-  Object.keys(Chart.instances).forEach(key => {
-    try { Chart.instances[key].destroy(); } catch(e) {}
+  // Chart.js v4 : getChart() par ID de canvas
+  document.querySelectorAll('canvas').forEach(canvas => {
+    const chart = Chart.getChart(canvas);
+    if (chart) chart.destroy();
   });
   chartsInitialized = {};
 }
