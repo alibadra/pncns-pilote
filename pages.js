@@ -2,7 +2,7 @@
 //  PNCNS — RENDU DES PAGES
 // ══════════════════════════════════════════
 
-let chartsInitialized = {};
+// chartsInitialized removed
 let currentYear = 2025;
 
 function getYear() { return parseInt(document.getElementById('year-filter')?.value || 2025); }
@@ -143,36 +143,34 @@ function renderDashboard() {
     </div>
   `;
 
-  // Charts — setTimeout pour laisser le DOM se stabiliser
-  setTimeout(() => {
-    const evo = DATA.evolution;
-    new Chart(document.getElementById('chart-evolution'), {
-      type: 'line',
-      data: {
-        labels: evo.labels,
-        datasets: [
-          { label: 'État', data: evo.etat, borderColor:'#185FA5', backgroundColor:'rgba(24,95,165,.06)', tension:.4, fill:true, pointRadius:3 },
-          { label: 'PTF', data: evo.ptf, borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,.06)', tension:.4, fill:true, pointRadius:3 },
-          { label: 'Ménages', data: evo.menages, borderColor:'#BA7517', tension:.4, fill:false, pointRadius:3 },
-          { label: 'ONG', data: evo.ong, borderColor:'#D4537E', tension:.4, fill:false, pointRadius:3 }
-        ]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-        scales:{y:{ticks:{callback:v=>'$'+v+'M',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}} }
-    });
+  // Charts
+  const evo = DATA.evolution;
+  new Chart(document.getElementById('chart-evolution'), {
+    type: 'line',
+    data: {
+      labels: evo.labels,
+      datasets: [
+        { label: 'État', data: evo.etat, borderColor:'#185FA5', backgroundColor:'rgba(24,95,165,.06)', tension:.4, fill:true, pointRadius:3 },
+        { label: 'PTF', data: evo.ptf, borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,.06)', tension:.4, fill:true, pointRadius:3 },
+        { label: 'Ménages', data: evo.menages, borderColor:'#BA7517', tension:.4, fill:false, pointRadius:3 },
+        { label: 'ONG', data: evo.ong, borderColor:'#D4537E', tension:.4, fill:false, pointRadius:3 }
+      ]
+    },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{y:{ticks:{callback:v=>'$'+v+'M',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}} }
+  });
 
-    const canvas = document.getElementById('chart-donut');
-    if (canvas) {
-      new Chart(canvas, {
-        type:'doughnut',
-        data:{
-          labels:['État','PTF','Ménages','ONG'],
-          datasets:[{data:[d.sources_breakdown.etat,d.sources_breakdown.ptf,d.sources_breakdown.menages,d.sources_breakdown.ong],backgroundColor:['#185FA5','#1D9E75','#BA7517','#D4537E'],borderWidth:0,hoverOffset:4}]
-        },
-        options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}
-      });
-    }
-  }, 50);
+  const canvas = document.getElementById('chart-donut');
+  if (canvas) {
+    new Chart(canvas, {
+      type:'doughnut',
+      data:{
+        labels:['État','PTF','Ménages','ONG'],
+        datasets:[{data:[d.sources_breakdown.etat,d.sources_breakdown.ptf,d.sources_breakdown.menages,d.sources_breakdown.ong],backgroundColor:['#185FA5','#1D9E75','#BA7517','#D4537E'],borderWidth:0,hoverOffset:4}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false}}}
+    });
+  }
 }
 
 // ══════════════════════════════════════════
@@ -261,32 +259,30 @@ function renderCartographie() {
   });
   setTimeout(() => map.invalidateSize(), 100);
 
-  setTimeout(() => {
-    const canvasProv = document.getElementById('chart-provinces');
-    if (canvasProv) {
-      new Chart(canvasProv, {
-        type: 'bar',
-        data: {
-          labels: DATA.provinces.map(p=>p.name),
-          datasets: [{
-            label: 'Total ($M)',
-            data: DATA.provinces.map(p=>p.total),
-            backgroundColor: DATA.provinces.map((_,i)=> i===0?'#185FA5':i===1?'#378ADD':i===2?'#85B7EB':'#B5D4F4'),
-            borderRadius: 4
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { ticks: { callback: v=>'$'+v+'M', font:{size:10} }, grid:{color:'rgba(0,0,0,.04)'} },
-            y: { ticks: { font:{size:11} }, grid:{display:false} }
-          }
+  const canvasProv = document.getElementById('chart-provinces');
+  if (canvasProv) {
+    new Chart(canvasProv, {
+      type: 'bar',
+      data: {
+        labels: DATA.provinces.map(p=>p.name),
+        datasets: [{
+          label: 'Total ($M)',
+          data: DATA.provinces.map(p=>p.total),
+          backgroundColor: DATA.provinces.map((_,i)=> i===0?'#185FA5':i===1?'#378ADD':i===2?'#85B7EB':'#B5D4F4'),
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { callback: v=>'$'+v+'M', font:{size:10} }, grid:{color:'rgba(0,0,0,.04)'} },
+          y: { ticks: { font:{size:11} }, grid:{display:false} }
         }
-      });
-    }
-  }, 50);
+      }
+    });
+  }
 }
 
 // ══════════════════════════════════════════
@@ -347,31 +343,29 @@ function renderSrmnea() {
     </div>
   `;
 
-  setTimeout(() => {
-    new Chart(document.getElementById('chart-srmnea-cat'), {
-      type:'bar',
-      data:{labels:s.categories, datasets:[
-        {label: String(yr), data:s.values_2025, backgroundColor:'#185FA5', borderRadius:4},
-        {label: String(yr-1), data:s.values_2024, backgroundColor:'#D6E8F5', borderRadius:4}
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-        scales:{y:{ticks:{callback:v=>'$'+v+'M',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
-    });
-    new Chart(document.getElementById('chart-srmnea-src'), {
-      type:'pie',
-      data:{labels:s.financement.labels, datasets:[{data:s.financement.values, backgroundColor:['#185FA5','#378ADD','#1D9E75','#D4537E','#BA7517'], borderWidth:0, hoverOffset:4}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11},padding:10}}}}
-    });
-    new Chart(document.getElementById('chart-nutrition'), {
-      type:'bar',
-      data:{labels:DATA.nutrition.categories, datasets:[
-        {label: String(yr), data:DATA.nutrition.values_2025, backgroundColor:'#1D9E75', borderRadius:4},
-        {label: String(yr-1), data:DATA.nutrition.values_2024, backgroundColor:'#9FE1CB', borderRadius:4}
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11}}}},
-        scales:{y:{ticks:{callback:v=>'$'+v+'M',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
-    });
-  }, 50);
+  new Chart(document.getElementById('chart-srmnea-cat'), {
+    type:'bar',
+    data:{labels:s.categories, datasets:[
+      {label: String(yr), data:s.values_2025, backgroundColor:'#185FA5', borderRadius:4},
+      {label: String(yr-1), data:s.values_2024, backgroundColor:'#D6E8F5', borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{ticks:{callback:v=>'$'+v+'M',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+  new Chart(document.getElementById('chart-srmnea-src'), {
+    type:'pie',
+    data:{labels:s.financement.labels, datasets:[{data:s.financement.values, backgroundColor:['#185FA5','#378ADD','#1D9E75','#D4537E','#BA7517'], borderWidth:0, hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11},padding:10}}}}
+  });
+  new Chart(document.getElementById('chart-nutrition'), {
+    type:'bar',
+    data:{labels:DATA.nutrition.categories, datasets:[
+      {label: String(yr), data:DATA.nutrition.values_2025, backgroundColor:'#1D9E75', borderRadius:4},
+      {label: String(yr-1), data:DATA.nutrition.values_2024, backgroundColor:'#9FE1CB', borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11}}}},
+      scales:{y:{ticks:{callback:v=>'$'+v+'M',font:{size:10}},grid:{color:'rgba(0,0,0,.04)'}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
 }
 
 // ══════════════════════════════════════════
@@ -637,19 +631,17 @@ function renderSha2011() {
     </div>
   `;
 
-  setTimeout(() => {
-    const canvasSha = document.getElementById('chart-sha');
-    if (canvasSha) {
-      new Chart(canvasSha, {
-        type:'doughnut',
-        data:{
-          labels: DATA.sha2011.map(s=>s.code+' '+s.label),
-          datasets:[{data: DATA.sha2011.map(s=>s.montant), backgroundColor:['#185FA5','#378ADD','#85B7EB','#1D9E75','#5DCAA5','#BA7517','#D4537E','#8892A0'], borderWidth:0, hoverOffset:4}]
-        },
-        options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{font:{size:10},padding:6,boxWidth:12}}}}
-      });
-    }
-  }, 50);
+  const canvasSha = document.getElementById('chart-sha');
+  if (canvasSha) {
+    new Chart(canvasSha, {
+      type:'doughnut',
+      data:{
+        labels: DATA.sha2011.map(s=>s.code+' '+s.label),
+        datasets:[{data: DATA.sha2011.map(s=>s.montant), backgroundColor:['#185FA5','#378ADD','#85B7EB','#1D9E75','#5DCAA5','#BA7517','#D4537E','#8892A0'], borderWidth:0, hoverOffset:4}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{font:{size:10},padding:6,boxWidth:12}}}}
+    });
+  }
 }
 
 // ══════════════════════════════════════════

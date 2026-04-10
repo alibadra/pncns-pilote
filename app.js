@@ -3,49 +3,54 @@
 // ══════════════════════════════════════════
 
 const PAGE_CONFIG = {
-  dashboard:    { title: 'Vue d\'ensemble', breadcrumb: 'PNCNS · Données provisoires 2025', render: renderDashboard },
-  cartographie: { title: 'Cartographie DRC', breadcrumb: 'PNCNS · 26 provinces · 2025', render: renderCartographie },
-  srmnea:       { title: 'SRMNEA & Nutrition', breadcrumb: 'PNCNS · Analyse programmatique · 2025', render: renderSrmnea },
-  saisie:       { title: 'Saisie des données', breadcrumb: 'PNCNS · Formulaire SHA2011', render: renderSaisie },
-  sources:      { title: 'Sources & Flux financiers', breadcrumb: 'PNCNS · Registre des sources', render: renderSources },
-  sha2011:      { title: 'Rapports SHA2011', breadcrumb: 'PNCNS · Classification internationale · 2025', render: renderSha2011 }
+  dashboard:    { title: "Vue d'ensemble",        breadcrumb: "PNCNS · Données provisoires",    render: renderDashboard },
+  cartographie: { title: "Cartographie DRC",       breadcrumb: "PNCNS · 26 provinces",           render: renderCartographie },
+  srmnea:       { title: "SRMNEA & Nutrition",     breadcrumb: "PNCNS · Analyse programmatique", render: renderSrmnea },
+  saisie:       { title: "Saisie des données",     breadcrumb: "PNCNS · Formulaire SHA2011",      render: renderSaisie },
+  sources:      { title: "Sources & Flux",         breadcrumb: "PNCNS · Registre des sources",   render: renderSources },
+  sha2011:      { title: "Rapports SHA2011",       breadcrumb: "PNCNS · Classification SHA2011", render: renderSha2011 }
 };
 
+let currentPage = null;
+
+// Détruit tous les charts Chart.js sur les canvas visibles
 function destroyAllCharts() {
-  // Chart.js v4 : getChart() par ID de canvas
-  document.querySelectorAll('canvas').forEach(canvas => {
-    const chart = Chart.getChart(canvas);
-    if (chart) chart.destroy();
+  document.querySelectorAll('canvas').forEach(c => {
+    const ch = Chart.getChart(c);
+    if (ch) ch.destroy();
   });
-  chartsInitialized = {};
 }
 
 function navigate(page) {
   if (!PAGE_CONFIG[page]) return;
   currentPage = page;
 
-  // Update nav
-  document.querySelectorAll('.nav-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.page === page);
-  });
+  // Nav active
+  document.querySelectorAll('.nav-item').forEach(el =>
+    el.classList.toggle('active', el.dataset.page === page)
+  );
 
-  // Update topbar
+  // Topbar
   const cfg = PAGE_CONFIG[page];
   const yr = getYear();
   document.getElementById('page-title').textContent = cfg.title;
-  document.getElementById('page-breadcrumb').textContent = cfg.breadcrumb.replace('2025', yr);
+  document.getElementById('page-breadcrumb').textContent = cfg.breadcrumb + ' · ' + yr;
 
-  // Destroy all charts before re-rendering to avoid canvas reuse errors
-  destroyAllCharts();
-
-  // Show/hide pages
+  // Affiche la bonne page, cache les autres
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
 
-  // Always re-render fresh
-  cfg.render();
+  // Détruit les charts PUIS render dans le prochain tick
+  destroyAllCharts();
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      cfg.render();
+    });
+  });
 }
 
-function renderPage(page) {
-  navigate(page);
+function updateYear() {
+  navigate(currentPage);
 }
+
+function renderPage(p) { navigate(p); }
