@@ -5,9 +5,9 @@
 const USERS = {
   admin: {
     password: 'admin123',
-    name: 'Administrateur',
-    role: 'Administrateur système',
-    initials: 'AD',
+    name: 'DIAKITE BADRA Ali',
+    role: 'Expert SI Santé & Plateformes Digitales',
+    initials: 'DB',
     canEdit: true
   },
   analyste: {
