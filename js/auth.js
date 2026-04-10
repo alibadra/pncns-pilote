@@ -36,6 +36,7 @@ function handleLogin() {
   const user = USERS[username];
   if (user && user.password === password) {
     currentUser = { ...user, username };
+    sessionStorage.setItem('pncns_user', JSON.stringify(currentUser));
     errorEl.classList.add('hidden');
     showApp();
   } else {
@@ -67,20 +68,25 @@ function showApp() {
 
 function logout() {
   currentUser = null;
+  sessionStorage.removeItem('pncns_user');
   document.getElementById('login-screen').classList.remove('hidden');
   document.getElementById('app-shell').classList.add('hidden');
   document.getElementById('username').value = '';
   document.getElementById('password').value = '';
-  // Destroy charts to avoid canvas reuse errors
-  Chart.helpers.each(Chart.instances, c => c.destroy());
   chartsInitialized = {};
 }
 
-// Allow Enter key on login
+// Allow Enter key on login + restore session on refresh
 document.addEventListener('DOMContentLoaded', () => {
   ['username','password'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => {
       if (e.key === 'Enter') handleLogin();
     });
   });
+
+  const saved = sessionStorage.getItem('pncns_user');
+  if (saved) {
+    currentUser = JSON.parse(saved);
+    showApp();
+  }
 });
