@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PNCNS — Plateforme Nationale des Comptes de Santé · RDC</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Leaflet map -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════════ -->
+<div id="login-screen" class="login-screen">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo-mark">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <rect width="36" height="36" rx="8" fill="#185FA5"/>
+          <path d="M18 6L7 12v12l11 6 11-6V12L18 6zm0 3.5L26.5 14 18 18.5 9.5 14 18 9.5zM9 15.8l8 4.4v8.8l-8-4.4v-8.8zm10 13.2v-8.8l8-4.4v8.8l-8 4.4z" fill="white"/>
+        </svg>
+      </div>
+      <div>
+        <div class="login-title">PNCNS</div>
+        <div class="login-subtitle">République Démocratique du Congo</div>
+      </div>
+    </div>
+
+    <h2 class="login-heading">Connexion à la plateforme</h2>
+    <p class="login-desc">Système national de cartographie des ressources financières en santé</p>
+
+    <div id="login-error" class="login-error hidden">Identifiants incorrects. Réessayez.</div>
+
+    <div class="form-group">
+      <label>Identifiant utilisateur</label>
+      <input type="text" id="username" placeholder="Entrez votre identifiant" autocomplete="username"/>
+    </div>
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+
+    <button class="btn-login" onclick="handleLogin()">Se connecter</button>
+
+    <div class="login-demo">
+      <strong>Comptes de démonstration :</strong>
+      <div class="demo-accounts">
+        <span onclick="fillDemo('admin','admin123')">👤 admin / admin123 <em>(Administrateur)</em></span>
+        <span onclick="fillDemo('analyste','analyse123')">👤 analyste / analyse123 <em>(Analyste)</em></span>
+        <span onclick="fillDemo('saisie','saisie123')">👤 saisie / saisie123 <em>(Agent de saisie)</em></span>
+      </div>
+    </div>
+
+    <div class="login-footer">
+      Ministère de la Santé Publique, Hygiène et Prévoyance Sociale<br/>
+      Secrétariat Général à la Santé Publique et Hygiène
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     APP SHELL (hidden until login)
+═══════════════════════════════════════════════ -->
+<div id="app-shell" class="app-shell hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark small">
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+          <rect width="36" height="36" rx="8" fill="#185FA5"/>
+          <path d="M18 6L7 12v12l11 6 11-6V12L18 6zm0 3.5L26.5 14 18 18.5 9.5 14 18 9.5zM9 15.8l8 4.4v8.8l-8-4.4v-8.8zm10 13.2v-8.8l8-4.4v8.8l-8 4.4z" fill="white"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">PNCNS</span>
+        <span class="logo-country">RDC · 2025</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-section-label">Tableau de bord</div>
+      <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+        Vue d'ensemble
+      </a>
+      <a class="nav-item" data-page="cartographie" onclick="navigate('cartographie')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a5 5 0 100 10A5 5 0 008 1zm0 1.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7zM8 5a1 1 0 100 2 1 1 0 000-2z"/><path d="M8 10v5M5 13l3 2 3-2" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+        Cartographie DRC
+      </a>
+      <a class="nav-item" data-page="srmnea" onclick="navigate('srmnea')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 11l3-4 2 2 3-5 2 3 2-2v5H2z"/></svg>
+        SRMNEA &amp; Nutrition
+      </a>
+
+      <div class="nav-section-label">Données</div>
+      <a class="nav-item" data-page="saisie" onclick="navigate('saisie')" id="nav-saisie">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1zm4 3v2H5v2h2v2h2v-2h2V7H9V5H7z"/></svg>
+        Saisie des données
+      </a>
+      <a class="nav-item" data-page="sources" onclick="navigate('sources')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><ellipse cx="8" cy="4" rx="5" ry="2"/><path d="M3 4v4c0 1.1 2.24 2 5 2s5-.9 5-2V4" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 8v4c0 1.1 2.24 2 5 2s5-.9 5-2V8" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        Sources &amp; flux
+      </a>
+
+      <div class="nav-section-label">Rapports</div>
+      <a class="nav-item" data-page="sha2011" onclick="navigate('sha2011')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1h8l3 3v10a1 1 0 01-1 1H4a1 1 0 01-1-1V2a1 1 0 011-1zm0 1v12h8V5h-3V2H4z"/></svg>
+        Rapports SHA2011
+      </a>
+    </nav>
+
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="user-avatar" id="user-avatar">AD</div>
+      <div class="user-info">
+        <div class="user-name" id="user-name">Admin</div>
+        <div class="user-role" id="user-role">Administrateur</div>
+      </div>
+      <button class="btn-logout" onclick="logout()" title="Déconnexion">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6 2H2v12h4v-1.5H3.5v-9H6V2zm4.5 3.5L14 8l-3.5 2.5V9H6V7h4.5V5.5z"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="page-title" id="page-title">Vue d'ensemble</div>
+        <div class="page-breadcrumb" id="page-breadcrumb">PNCNS · Données provisoires 2025</div>
+      </div>
+      <div class="topbar-right">
+        <select class="filter-select" id="year-filter" onchange="updateYear()">
+          <option value="2025">Exercice 2025</option>
+          <option value="2024">Exercice 2024</option>
+          <option value="2023">Exercice 2023</option>
+        </select>
+        <button class="btn-export" onclick="alert('Export PDF en cours de développement dans la version finale.')">⬇ Exporter</button>
+        <div class="notif-bell" title="Notifications">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a5 5 0 00-5 5v3l-1.5 2h13L13 9V6a5 5 0 00-5-5zm0 13a2 2 0 01-2-2h4a2 2 0 01-2 2z"/></svg>
+          <span class="notif-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE VIEWS -->
+    <div id="page-dashboard" class="page active"></div>
+    <div id="page-cartographie" class="page"></div>
+    <div id="page-srmnea" class="page"></div>
+    <div id="page-saisie" class="page"></div>
+    <div id="page-sources" class="page"></div>
+    <div id="page-sha2011" class="page"></div>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/pages.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
