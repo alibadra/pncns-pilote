@@ -74,6 +74,9 @@
 ═══════════════════════════════════════════════ -->
 <div id="app-shell" class="app-shell hidden">
 
+  <!-- BACKDROP MOBILE -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
+
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
@@ -136,6 +139,13 @@
   <!-- MAIN CONTENT -->
   <main class="main-content">
     <div class="topbar">
+      <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+          <rect x="1" y="3" width="16" height="2" rx="1"/>
+          <rect x="1" y="8" width="16" height="2" rx="1"/>
+          <rect x="1" y="13" width="16" height="2" rx="1"/>
+        </svg>
+      </button>
       <div class="topbar-left">
         <div class="page-title" id="page-title">Vue d'ensemble</div>
         <div class="page-breadcrumb" id="page-breadcrumb">PNCNS · Données provisoires 2025</div>

@@ -358,6 +358,75 @@ html, body { height: 100%; font-family: var(--font); background: var(--gray-50);
 @media (max-width: 900px) {
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
   .panels-row.cols-2, .panels-row.cols-3 { grid-template-columns: 1fr; }
-  .sidebar { width: 60px; }
+  .sidebar { width: 60px; min-width: 60px; }
   .logo-text-wrap, .nav-section-label, .nav-item span, .user-info { display: none; }
+}
+
+/* ── BOUTON HAMBURGER (masqué sur desktop/tablette) ── */
+.hamburger-btn {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: none; border: 1px solid var(--gray-200);
+  border-radius: var(--radius); cursor: pointer;
+  color: var(--gray-600); margin-right: 8px;
+  transition: background .15s, color .15s;
+}
+.hamburger-btn:hover { background: var(--gray-100); color: var(--gray-800); }
+
+/* ── BACKDROP SIDEBAR MOBILE ── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 199;
+}
+.sidebar-backdrop.visible { display: block; }
+
+/* ══════════════════════════════════════════
+   MOBILE — SMARTPHONES (≤ 600px)
+   ══════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  .hamburger-btn { display: flex; }
+
+  .sidebar {
+    position: fixed !important;
+    top: 0; left: 0; bottom: 0;
+    width: 260px !important;
+    min-width: 260px !important;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    box-shadow: 4px 0 24px rgba(0,0,0,.18);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .logo-text-wrap { display: flex !important; }
+  .nav-section-label { display: block !important; }
+  .user-info { display: flex !important; }
+
+  .topbar { padding: 0 10px; gap: 6px; }
+  .topbar-left { flex: 1; min-width: 0; overflow: hidden; }
+  .page-title { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .page-breadcrumb { display: none; }
+  .btn-export { padding: 6px 10px; font-size: 12px; }
+  .filter-select { max-width: 95px; font-size: 12px; padding: 5px 6px; }
+
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+
+  .page { padding: 12px; }
+
+  .panel { padding: 14px; }
+  .panel:has(.data-table) { overflow-x: auto; }
+
+  #map-container { height: 320px; }
+
+  .form-grid { grid-template-columns: 1fr !important; }
+  .form-actions { flex-direction: column; }
+  .btn-primary, .btn-secondary { width: 100%; text-align: center; justify-content: center; }
+
+  .metric-value { font-size: 22px; }
 }

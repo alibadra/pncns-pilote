@@ -2,6 +2,21 @@
 //  PNCNS — CONTRÔLEUR PRINCIPAL
 // ══════════════════════════════════════════
 
+// ── SIDEBAR MOBILE ──
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const isOpen = sidebar.classList.toggle('open');
+  backdrop.classList.toggle('visible', isOpen);
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  sidebar.classList.remove('open');
+  backdrop.classList.remove('visible');
+}
+
 const PAGE_CONFIG = {
   dashboard:    { title: 'Vue d\'ensemble', breadcrumb: 'PNCNS · Données provisoires 2025', render: renderDashboard },
   cartographie: { title: 'Cartographie DRC', breadcrumb: 'PNCNS · 26 provinces · 2025', render: renderCartographie },
@@ -30,6 +45,9 @@ function navigate(page) {
   // Show/hide pages
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
+
+  // Fermer la sidebar sur mobile après navigation
+  closeSidebar();
 
   // Render
   cfg.render();
